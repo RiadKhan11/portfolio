@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechnoDeals | CMS Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { background: #f8fafc; font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useEffect, useMemo, useRef, useState } = React;
+
+        const STORAGE_KEY = 'technodeals_siteData_v3';
+        /** Put this file next to index.html / admin.html on your host (export from admin after editing) */
+        const SITE_DATA_FILE = 'site-data.json';
+
+        const DEFAULT_SITE_DATA = {
+            info: {
+                logo_title: 'TECHNODEALS BD',
+                logo_image: '',
+                address: 'Road-13, Block-E, Banani C/A, Dhaka 1213, Bangladesh',
+                email: 'technodealsbd@gmail.com',
+                phone: '+8801558956983'
+            },
+            hero: {
+                title: 'TECHNODEALS BD',
+                subtitle: 'Consultancy • Engineering Solution • Material Supply • IT Support',
+                cta_text: 'Request Consultation',
+                video: 'https://cdn.coverr.co/videos/coverr-people-on-a-cruising-boat-in-the-ocean-4301/1080p.mp4'
+            },
+            about: {
+                title: 'About Our Firm',
+                content: 'Technodeals BD is a multidisciplinary consultancy firm providing integrated, end-to-end solutions. By combining innovative thinking with engineering precision, we transform complex challenges into sustainable successes.',
+                image: 'https://images.unsplash.com/photo-1577998072123-0861d982e9e5?auto=format&fit=crop&w=1600&q=80'
+            },
+            services: [
+                { id: 'svc_1', title: 'Consultancy', desc: 'Expert technical and strategic maritime advice.', image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80' },
+                { id: 'svc_2', title: 'Engineering Solutions', desc: 'Precision design and structural analysis.', image: 'https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?auto=format&fit=crop&w=900&q=80' },
+                { id: 'svc_3', title: 'Material Supply', desc: 'High-quality industrial and maritime procurement.', image: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=900&q=80' },
+                { id: 'svc_4', title: 'IT Support', desc: 'Integrated digital infrastructure for industry.', image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&w=900&q=80' }
+            ],
+            products: [
+                {
+                    id: 'prd_w1',
+                    title: '50T 8Point Mooring Winch',
+                    desc: 'Heavy-duty eight-point mooring spread for offshore positioning and station-keeping. Multi-drum arrangement for simultaneous line make-up, tension monitoring, and controlled release during berthing or field operations.',
+                    image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_w2',
+                    title: '60 Ton Storage Winch',
+                    desc: 'High-capacity storage winch for long lengths of wire or synthetic rope. Suited to deck stowage, cable laying support, and controlled payout / recovery in industrial and marine applications.',
+                    image: 'https://images.unsplash.com/photo-1529078155058-5d716f45d604?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_w3',
+                    title: '40 Ton 4 Point Mooring Winch',
+                    desc: 'Four-point mooring winch system for terminals, barges, and offshore spreads. Delivers reliable line pull for symmetric mooring layouts and coordinated tensioning.',
+                    image: 'https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_w4',
+                    title: '10 Ton Single Drum Lifting Winch',
+                    desc: 'Single-drum lifting winch for deck stores, workshop lifts, and auxiliary hoisting. Compact configuration for batch production or vessel retrofit programmes.',
+                    image: 'https://images.unsplash.com/photo-1581092919535-7146b8f1d1bb?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_w5',
+                    title: '50 Ton Anchor Handling Towing Winch',
+                    desc: 'Anchor-handling and towing (AHTS) winch rated for high line pull, braking, and spooling of wire and chain during rig moves, buoy work, and offshore support.',
+                    image: 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_w6',
+                    title: '3 Ton Double Drum Anchor Windlass',
+                    desc: 'Double-drum anchor windlass for chain and rope handling on foredecks and workboats. Separated drums allow independent anchor work while maintaining a small installed footprint.',
+                    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_1',
+                    title: '250 Ton Single Drum Hydraulic Mooring Winch',
+                    desc: 'A 250-ton capacity hydraulic mooring winch system used for laying submersible pipeline. In 2013, it laid 37km of 24-inch diameter pipeline at 52m depth, pulling 3.2km onshore in Surabaya, Indonesia.',
+                    image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_2',
+                    title: 'Marine Terminal Gangway & Pontoon',
+                    desc: 'Delivered in 2021, this system includes a pair of pontoons (9m x 5m x 1.8m) with gangways (12m long x 2m wide) to improve workflow between two facility parts.',
+                    image: 'https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_3',
+                    title: '2.5 Ton 3m Marinized Sub-zero Cold Storage Electrical Overhead 4-way Slewring Crane',
+                    desc: '9 units delivered in 2021 for Antarctic krill fishing vessels. Operates in Zone 1 hazardous areas and cold storage (-32°C), powered by vessel electrical systems.',
+                    image: 'https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_4',
+                    title: '100 Ton Turret Gantry Hoist',
+                    desc: 'Manufactured for FPSO vessel in 2015. Features mono-railing 100-ton vertical lifting with ±50mm longitude accuracy. Lifting speed: 0.7m/min (low) / 7m/min (high), lifting height 53m, traveling speed 3m/min.',
+                    image: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_5',
+                    title: 'Pipeline End Manifolds (PLEMs)',
+                    desc: 'Subsea pipeline termination structures that split pipeline flow into branches connected to production/injection wells. Includes engineering, procurement, and installation with considerations for soil conditions, thermal expansion, and flow-induced vibrations.',
+                    image: 'https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_6',
+                    title: 'API Wellhead & X-Mas Tree',
+                    desc: 'Sales of oil & gas wellhead equipment including casing head, casing head spool, tubing head spool, API X-mas tree, choke & kill manifold, manual/hydraulic gate valves, and check valves.',
+                    image: 'https://images.unsplash.com/photo-1581091215367-59ab6b3b3dff?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_7',
+                    title: 'API Rotating Blowout Preventer (RBOP) & Mud/Gas Separator',
+                    desc: 'Safety equipment for oil & gas drilling operations including rotating blowout preventers and mud/gas separators.',
+                    image: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_8',
+                    title: 'API Flanges, Drilling Spool, Elbows & Hammer Union',
+                    desc: 'Various sizes of API flanges, drilling spools, API elbows, hammer unions, ring gaskets, studs, bolts, and nuts.',
+                    image: 'https://images.unsplash.com/photo-1581092334519-3d7b1a0f8261?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_9',
+                    title: 'NOV (Varco) TDS-8S Topdrive Bearings Assembly Complete',
+                    desc: 'Completed overhaul service for TDS-8S Topdrive in the Netherlands in 2022. Provides inspections, repair, and servicing for both old and new top drives.',
+                    image: 'https://images.unsplash.com/photo-1581091012184-5c2b9b9b66f1?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_10',
+                    title: 'Marine & Offshore Machineries Repair',
+                    desc: 'Service and repair for brands including Plimsoll, PH Hydraulics, Promoter, Transvictory, MacGregor, Rolls Royce.',
+                    image: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_11',
+                    title: 'Marine & Offshore Cranes Repair (JJ, MacGregor)',
+                    desc: 'Specialized repair services for JJ and MacGregor marine and offshore cranes.',
+                    image: 'https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_12',
+                    title: 'Hopper Hydraulic Cylinders Repair (Bosch Rexroth)',
+                    desc: 'Overhaul and repair services for Bosch Rexroth hopper hydraulic cylinders.',
+                    image: 'https://images.unsplash.com/photo-1581092919535-7146b8f1d1bb?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_13',
+                    title: 'Lars System Repair (Deeptech)',
+                    desc: 'Refurbishment and repair services for Deeptech LARS (Launch and Recovery System).',
+                    image: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_14',
+                    title: 'Pipe Handling System Repair (TC, JJ)',
+                    desc: 'Repair and servicing of pipe handling systems from TC and JJ.',
+                    image: 'https://images.unsplash.com/photo-1581091215367-59ab6b3b3dff?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_15',
+                    title: '30Ton Bow Towing Winch Repair',
+                    desc: 'On-site repair of 30-ton bow towing winch in Cameroon.',
+                    image: 'https://images.unsplash.com/photo-1529078155058-5d716f45d604?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_16',
+                    title: '10Ton Single Drum Lifting Winch Servicing & Commissioning',
+                    desc: 'Servicing and commissioning completed in Indonesia.',
+                    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_17',
+                    title: 'Refurbishment of LARS System',
+                    desc: 'Complete refurbishment of Launch and Recovery Systems at TC Workshop.',
+                    image: 'https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_18',
+                    title: '1Ton-10M / 3Ton-4.8M Electrical Hydraulic Knuckle Boom Crane',
+                    desc: 'Electrical hydraulic knuckle boom crane available in 1-ton (10m) and 3-ton (4.8m) configurations.',
+                    image: 'https://images.unsplash.com/photo-1506973035872-a4f23ef3f13f?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_19',
+                    title: 'Overhaul of Hopper Cylinder',
+                    desc: 'Complete hopper cylinder overhaul service at TC Workshop.',
+                    image: 'https://images.unsplash.com/photo-1581092334519-3d7b1a0f8261?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_20',
+                    title: '0.5Ton 20M Cargo Crane Electro-Hydraulic',
+                    desc: 'Electro-hydraulic cargo crane with 0.5-ton capacity and 20-meter reach.',
+                    image: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1400&q=80'
+                },
+                {
+                    id: 'prd_21',
+                    title: '1.2Ton 11.5m Marine Crane',
+                    desc: 'Marine crane with 1.2-ton lifting capacity and 11.5-meter length.',
+                    image: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1400&q=80'
+                }
+            ],
+            projects: [
+                {
+                    id: 'prj_1',
+                    title: '72m Offshore Support Vessel',
+                    desc: 'Concept design, stability analysis, and class approval for a DP-2 offshore support vessel operating in harsh environments.',
+                    type: 'Offshore',
+                    year: '2024',
+                    image: 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    id: 'prj_2',
+                    title: 'High-Speed Aluminum Catamaran',
+                    desc: 'Hydrodynamic optimization and resistance analysis resulting in a 12% reduction in fuel consumption.',
+                    type: 'Passenger',
+                    year: '2023',
+                    image: 'https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    id: 'prj_3',
+                    title: 'Multi-Purpose Harbor Tug',
+                    desc: 'Full design package including intact/damage stability, class drawings, and flag-state approval.',
+                    type: 'Workboat',
+                    year: '2022',
+                    image: 'https://images.unsplash.com/photo-1544551763-cedeca3450d5?auto=format&fit=crop&w=1200&q=80'
+                }
+            ]
+        };
+
+        function safeParse(json) {
+            try { return JSON.parse(json); } catch { return null; }
+        }
+
+        function applySiteDataMerge(defaults, parsed) {
+            if (!parsed || typeof parsed !== 'object') return defaults;
+            return {
+                ...defaults,
+                ...parsed,
+                info: { ...defaults.info, ...(parsed.info || {}) },
+                hero: { ...defaults.hero, ...(parsed.hero || {}) },
+                about: { ...defaults.about, ...(parsed.about || {}) },
+                services: Array.isArray(parsed.services) ? parsed.services : defaults.services,
+                products: Array.isArray(parsed.products) ? parsed.products : defaults.products,
+                projects: Array.isArray(parsed.projects) ? parsed.projects : defaults.projects
+            };
+        }
+
+        function loadSiteData() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            const parsed = raw ? safeParse(raw) : null;
+            if (!parsed || typeof parsed !== 'object') return DEFAULT_SITE_DATA;
+            return applySiteDataMerge(DEFAULT_SITE_DATA, parsed);
+        }
+
+        async function fetchRemoteSiteData() {
+            try {
+                const base = new URL(SITE_DATA_FILE, window.location.href).href;
+                const url = base + (base.includes('?') ? '&' : '?') + '_=' + Date.now();
+                const r = await fetch(url, { cache: 'no-store' });
+                if (!r.ok) return null;
+                return applySiteDataMerge(DEFAULT_SITE_DATA, await r.json());
+            } catch {
+                return null;
+            }
+        }
+
+        function saveSiteData(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function downloadSiteDataJsonFile(data) {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = SITE_DATA_FILE;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 2000);
+        }
+
+        function uid(prefix) {
+            return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+        }
+
+        function Field({ label, value, onChange, placeholder, type = 'text' }) {
+            return (
+                <div>
+                    <label className="text-xs font-black text-slate-400 uppercase">{label}</label>
+                    <input
+                        type={type}
+                        className="w-full p-4 mt-2 border rounded-2xl bg-slate-50 outline-none focus:border-blue-500"
+                        value={value ?? ''}
+                        placeholder={placeholder}
+                        onChange={(e) => onChange(e.target.value)}
+                    />
+                </div>
+            );
+        }
+
+        function TextArea({ label, value, onChange, placeholder, rows = 6 }) {
+            return (
+                <div>
+                    <label className="text-xs font-black text-slate-400 uppercase">{label}</label>
+                    <textarea
+                        className="w-full p-4 mt-2 border rounded-2xl bg-slate-50 outline-none focus:border-blue-500"
+                        value={value ?? ''}
+                        placeholder={placeholder}
+                        rows={rows}
+                        onChange={(e) => onChange(e.target.value)}
+                    />
+                </div>
+            );
+        }
+
+        /** Resize and encode as JPEG so localStorage stays within browser limits */
+        function embedLocalImageFile(file, onDone, onErr) {
+            if (!file || !file.type.startsWith('image/')) {
+                onErr(new Error('Please choose an image file.'));
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                const img = new Image();
+                img.onload = () => {
+                    const maxSide = 1920;
+                    let w = img.naturalWidth;
+                    let h = img.naturalHeight;
+                    if (!w || !h) {
+                        onErr(new Error('Could not read image dimensions.'));
+                        return;
+                    }
+                    if (w > maxSide || h > maxSide) {
+                        if (w >= h) {
+                            h = Math.round((h * maxSide) / w);
+                            w = maxSide;
+                        } else {
+                            w = Math.round((w * maxSide) / h);
+                            h = maxSide;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, w, h);
+                    let dataUrl;
+                    try {
+                        dataUrl = canvas.toDataURL('image/jpeg', 0.86);
+                    } catch (e) {
+                        onErr(new Error('Could not process image (try JPG or PNG).'));
+                        return;
+                    }
+                    onDone(dataUrl);
+                };
+                img.onerror = () => onErr(new Error('Invalid image file.'));
+                img.src = reader.result;
+            };
+            reader.onerror = () => onErr(new Error('Could not read file.'));
+            reader.readAsDataURL(file);
+        }
+
+        function ImageField({ label, value, onChange }) {
+            const fileRef = useRef(null);
+            const [busy, setBusy] = useState(false);
+            const isEmbedded = typeof value === 'string' && value.startsWith('data:image');
+
+            function onFileChange(e) {
+                const file = e.target.files && e.target.files[0];
+                e.target.value = '';
+                if (!file) return;
+                setBusy(true);
+                embedLocalImageFile(
+                    file,
+                    (dataUrl) => {
+                        onChange(dataUrl);
+                        setBusy(false);
+                    },
+                    (err) => {
+                        setBusy(false);
+                        alert(err.message || 'Upload failed');
+                    }
+                );
+            }
+
+            const approxKb = isEmbedded ? Math.round(value.length / 1024) : 0;
+
+            return (
+                <div>
+                    <label className="text-xs font-black text-slate-400 uppercase">{label}</label>
+                    <input
+                        type="text"
+                        className="w-full p-4 mt-2 border rounded-2xl bg-slate-50 outline-none focus:border-blue-500"
+                        value={isEmbedded ? '' : (value ?? '')}
+                        placeholder={
+                            isEmbedded
+                                ? 'Using a photo from your computer (embedded). Paste a URL here to switch, or upload another file.'
+                                : 'https://... or use Upload from computer'
+                        }
+                        onChange={(e) => onChange(e.target.value)}
+                    />
+                    <div className="flex flex-wrap items-center gap-3 mt-3">
+                        <label className="inline-flex items-center justify-center px-5 py-3 rounded-2xl bg-blue-900 text-white font-black text-sm cursor-pointer hover:bg-blue-800 transition-all disabled:opacity-50">
+                            <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFileChange} disabled={busy} />
+                            {busy ? 'Processing…' : 'Upload from computer'}
+                        </label>
+                        {(value || isEmbedded) ? (
+                            <button
+                                type="button"
+                                onClick={() => onChange('')}
+                                className="px-5 py-3 rounded-2xl border-2 border-slate-200 font-black text-sm text-slate-600 hover:bg-slate-50"
+                            >
+                                Clear image
+                            </button>
+                        ) : null}
+                        {isEmbedded ? (
+                            <span className="text-xs font-bold text-emerald-700">Embedded in browser storage (~{approxKb} KB)</span>
+                        ) : null}
+                    </div>
+                    {value ? (
+                        <div className="mt-4 rounded-2xl border border-slate-200 overflow-hidden bg-slate-100 max-w-xs">
+                            <img src={value} alt="" className="w-full h-32 object-cover object-center" />
+                        </div>
+                    ) : null}
+                    <p className="text-[11px] text-slate-500 font-semibold mt-3 leading-relaxed">
+                        Local photos are saved inside this browser (with your site data) when you click Save. They work on <code className="text-slate-700">index.html</code> on the same computer and browser. For a live public website, upload images to your host and paste the URL instead—very large galleries may exceed storage limits.
+                    </p>
+                </div>
+            );
+        }
+
+        function AdminPanel() {
+            const [isLoggedIn, setIsLoggedIn] = useState(false);
+            const [pass, setPass] = useState('');
+            const [activeTab, setActiveTab] = useState('info');
+            const [siteData, setSiteData] = useState(() => loadSiteData());
+            const [savedAt, setSavedAt] = useState('');
+            /** Which list item (by id) has its editor expanded — services / products / projects only */
+            const [expandedItemId, setExpandedItemId] = useState(null);
+            const importJsonRef = useRef(null);
+
+            useEffect(() => {
+                // keep admin in sync if homepage or another tab updates storage
+                function onStorage(e) {
+                    if (e && e.key && e.key !== STORAGE_KEY) return;
+                    setSiteData(loadSiteData());
+                }
+                window.addEventListener('storage', onStorage);
+                return () => window.removeEventListener('storage', onStorage);
+            }, []);
+
+            useEffect(() => {
+                setExpandedItemId(null);
+            }, [activeTab]);
+
+            const [serverPullBusy, setServerPullBusy] = useState(false);
+
+            async function loadFromServerJsonFile() {
+                setServerPullBusy(true);
+                try {
+                    const data = await fetchRemoteSiteData();
+                    if (!data) {
+                        alert(`No ${SITE_DATA_FILE} found on this host, or the request failed.`);
+                        return;
+                    }
+                    setSiteData(data);
+                    saveSiteData(data);
+                    setSavedAt(new Date().toLocaleString());
+                } finally {
+                    setServerPullBusy(false);
+                }
+            }
+
+            const tabs = useMemo(() => (['info', 'hero', 'about', 'services', 'products', 'projects']), []);
+
+            function update(path, value) {
+                setSiteData((prev) => {
+                    const next = structuredClone ? structuredClone(prev) : JSON.parse(JSON.stringify(prev));
+                    let cur = next;
+                    for (let i = 0; i < path.length - 1; i++) cur = cur[path[i]];
+                    cur[path[path.length - 1]] = value;
+                    return next;
+                });
+            }
+
+            function updateListItem(listKey, id, patch) {
+                setSiteData((prev) => {
+                    const next = structuredClone ? structuredClone(prev) : JSON.parse(JSON.stringify(prev));
+                    next[listKey] = (next[listKey] || []).map((item) => (item.id === id ? { ...item, ...patch } : item));
+                    return next;
+                });
+            }
+
+            function addListItem(listKey) {
+                setSiteData((prev) => {
+                    const next = structuredClone ? structuredClone(prev) : JSON.parse(JSON.stringify(prev));
+                    const idPrefix = listKey === 'services' ? 'svc' : listKey === 'products' ? 'prd' : 'prj';
+                    const base =
+                        listKey === 'projects'
+                            ? { id: uid(idPrefix), title: '', desc: '', type: '', year: '', image: '' }
+                            : { id: uid(idPrefix), title: '', desc: '', image: '' };
+                    next[listKey] = [...(next[listKey] || []), base];
+                    return next;
+                });
+            }
+
+            function removeListItem(listKey, id) {
+                setSiteData((prev) => {
+                    const next = structuredClone ? structuredClone(prev) : JSON.parse(JSON.stringify(prev));
+                    next[listKey] = (next[listKey] || []).filter((x) => x.id !== id);
+                    return next;
+                });
+            }
+
+            function reorderList(listKey, fromIndex, toIndex) {
+                if (fromIndex === toIndex || Number.isNaN(fromIndex) || Number.isNaN(toIndex)) return;
+                setSiteData((prev) => {
+                    const next = structuredClone ? structuredClone(prev) : JSON.parse(JSON.stringify(prev));
+                    const list = [...(next[listKey] || [])];
+                    if (fromIndex < 0 || fromIndex >= list.length || toIndex < 0 || toIndex >= list.length) return prev;
+                    const [moved] = list.splice(fromIndex, 1);
+                    list.splice(toIndex, 0, moved);
+                    next[listKey] = list;
+                    return next;
+                });
+            }
+
+            /** Move one slot up (−1) or down (+1); reorderList handles bounds (including move to top). */
+            function moveListItemOneStep(listKey, index, delta) {
+                reorderList(listKey, index, index + delta);
+            }
+
+            function onSave() {
+                saveSiteData(siteData);
+                const t = new Date();
+                setSavedAt(t.toLocaleString());
+            }
+
+            function resetToDefault() {
+                setSiteData(DEFAULT_SITE_DATA);
+                saveSiteData(DEFAULT_SITE_DATA);
+                setSavedAt(new Date().toLocaleString());
+            }
+
+            if (!isLoggedIn) {
+                return (
+                    <div className="h-screen flex items-center justify-center">
+                        <div className="bg-white p-12 rounded-[40px] shadow-2xl w-full max-w-sm text-center">
+                            <h1 className="text-3xl font-black text-blue-900 mb-8">SECURE LOGIN</h1>
+                            <input 
+                                type="password" 
+                                className="w-full p-4 bg-slate-50 border rounded-2xl mb-4 outline-none focus:border-blue-500" 
+                                placeholder="Admin Password"
+                                value={pass}
+                                onChange={e => setPass(e.target.value)}
+                            />
+                            <button 
+                                onClick={() => pass === 'admin123' ? setIsLoggedIn(true) : alert('Failed')}
+                                className="w-full bg-blue-900 text-white py-4 rounded-2xl font-black hover:bg-blue-800 transition-all"
+                            >
+                                ACCESS PANEL
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="flex min-h-screen">
+                    {/* Sidebar */}
+                    <div className="w-64 bg-blue-950 text-white p-8">
+                        <h2 className="text-xl font-black mb-10 border-b border-white/10 pb-4">CMS PANEL</h2>
+                        <nav className="space-y-4">
+                            {tabs.map(tab => (
+                                <button 
+                                    key={tab}
+                                    onClick={() => setActiveTab(tab)}
+                                    className={`w-full text-left p-3 rounded-xl font-bold capitalize transition-all ${activeTab === tab ? 'bg-blue-600 text-white' : 'text-blue-100/40 hover:text-white'}`}
+                                >
+                                    {tab}
+                                </button>
+                            ))}
+                        </nav>
+                        <div className="mt-10 space-y-3">
+                            <button onClick={onSave} className="w-full bg-blue-600 hover:bg-blue-500 transition-all text-white font-black py-3 rounded-xl">SAVE ALL</button>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    downloadSiteDataJsonFile(siteData);
+                                }}
+                                className="w-full bg-emerald-700 hover:bg-emerald-600 transition-all text-white font-black py-3 rounded-xl text-sm"
+                            >
+                                Download {SITE_DATA_FILE}
+                            </button>
+                            <button
+                                type="button"
+                                disabled={serverPullBusy}
+                                onClick={loadFromServerJsonFile}
+                                className="w-full bg-slate-700 hover:bg-slate-600 disabled:opacity-50 transition-all text-white font-black py-3 rounded-xl text-sm"
+                            >
+                                {serverPullBusy ? 'Loading…' : `Load ${SITE_DATA_FILE} from server`}
+                            </button>
+                            <p className="text-[10px] text-white/50 font-semibold leading-snug px-1">
+                                Save writes to this browser—the homepage on <span className="text-white/70">this device</span> reads the same storage. Download / import JSON to move data between computers or keep a backup. Use “Load from server” only if you host {SITE_DATA_FILE} and want to pull it into the editor.
+                            </p>
+                            <label className="block w-full">
+                                <span className="sr-only">Import JSON</span>
+                                <input
+                                    ref={importJsonRef}
+                                    type="file"
+                                    accept="application/json,.json"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                        const f = e.target.files && e.target.files[0];
+                                        e.target.value = '';
+                                        if (!f) return;
+                                        const reader = new FileReader();
+                                        reader.onload = () => {
+                                            const parsed = safeParse(reader.result);
+                                            if (!parsed) {
+                                                alert('Could not read JSON.');
+                                                return;
+                                            }
+                                            const merged = applySiteDataMerge(DEFAULT_SITE_DATA, parsed);
+                                            setSiteData(merged);
+                                            saveSiteData(merged);
+                                            setSavedAt(new Date().toLocaleString());
+                                        };
+                                        reader.onerror = () => alert('File read failed.');
+                                        reader.readAsText(f);
+                                    }}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => importJsonRef.current && importJsonRef.current.click()}
+                                    className="w-full border border-emerald-500/40 hover:bg-white/5 transition-all text-emerald-300 font-black py-3 rounded-xl text-sm"
+                                >
+                                    Import {SITE_DATA_FILE}
+                                </button>
+                            </label>
+                            <button onClick={resetToDefault} className="w-full border border-white/20 hover:bg-white/5 transition-all text-white/80 font-black py-3 rounded-xl">RESET DEFAULT</button>
+                            <button onClick={() => window.location.reload()} className="w-full text-red-400 font-bold text-sm pt-4">LOGOUT</button>
+                            {savedAt ? <div className="text-[11px] text-white/50 font-bold pt-2">Saved: {savedAt}</div> : null}
+                        </div>
+                    </div>
+
+                    {/* Content Area */}
+                    <main className="flex-1 p-12">
+                        <div className="max-w-4xl bg-white rounded-[40px] shadow-sm border border-slate-200 p-10">
+                            <h1 className="text-3xl font-black text-blue-900 mb-8 uppercase tracking-widest">Edit {activeTab}</h1>
+                            
+                            {activeTab === 'info' && (
+                                <div className="space-y-6">
+                                    <Field label="Logo Title" value={siteData.info.logo_title} onChange={(v) => update(['info', 'logo_title'], v)} />
+                                    <ImageField
+                                        label="Logo image (navbar & favicon — URL or upload)"
+                                        value={siteData.info.logo_image}
+                                        onChange={(v) => update(['info', 'logo_image'], v)}
+                                    />
+                                    <Field label="Address" value={siteData.info.address} onChange={(v) => update(['info', 'address'], v)} />
+                                    <Field label="Contact Email" value={siteData.info.email} onChange={(v) => update(['info', 'email'], v)} />
+                                    <Field label="Phone" value={siteData.info.phone} onChange={(v) => update(['info', 'phone'], v)} />
+                                    <button onClick={onSave} className="bg-blue-900 text-white px-8 py-4 rounded-2xl font-black">SAVE CHANGES</button>
+                                </div>
+                            )}
+
+                            {activeTab === 'hero' && (
+                                <div className="space-y-6">
+                                    <Field label="Hero Title" value={siteData.hero.title} onChange={(v) => update(['hero', 'title'], v)} />
+                                    <Field label="Hero Subtitle" value={siteData.hero.subtitle} onChange={(v) => update(['hero', 'subtitle'], v)} />
+                                    <Field label="Hero Button Text" value={siteData.hero.cta_text} onChange={(v) => update(['hero', 'cta_text'], v)} />
+                                    <Field label="Hero Background Video URL" value={siteData.hero.video} onChange={(v) => update(['hero', 'video'], v)} placeholder="https://..." />
+                                    <button onClick={onSave} className="bg-blue-900 text-white px-8 py-4 rounded-2xl font-black">SAVE HERO</button>
+                                </div>
+                            )}
+
+                            {activeTab === 'about' && (
+                                <div className="space-y-6">
+                                    <Field label="About Title" value={siteData.about.title} onChange={(v) => update(['about', 'title'], v)} />
+                                    <ImageField label="About image (URL or upload)" value={siteData.about.image} onChange={(v) => update(['about', 'image'], v)} />
+                                    <TextArea label="Main Content" value={siteData.about.content} onChange={(v) => update(['about', 'content'], v)} rows={8} />
+                                    <button onClick={onSave} className="bg-blue-900 text-white px-8 py-4 rounded-2xl font-black">SAVE ABOUT</button>
+                                </div>
+                            )}
+
+                            {['services', 'products', 'projects'].includes(activeTab) && (
+                                <div className="space-y-6">
+                                    <div className="flex items-center justify-between gap-4">
+                                        <div className="text-sm font-black text-slate-500 uppercase tracking-widest">Manage {activeTab}</div>
+                                        <button
+                                            onClick={() => addListItem(activeTab)}
+                                            className="bg-slate-900 text-white px-5 py-3 rounded-2xl font-black hover:bg-slate-800 transition-all"
+                                        >
+                                            + Add
+                                        </button>
+                                    </div>
+                                    <p className="text-xs text-slate-500 font-semibold leading-relaxed">
+                                        Click a <span className="font-black text-slate-700">title</span> to show or hide details. Use <span className="font-black text-slate-700">↑ ↓</span> to move one step (including to the top). Save when finished.
+                                    </p>
+
+                                    <div className="space-y-3">
+                                        {(siteData[activeTab] || []).map((item, index) => {
+                                            const listLen = (siteData[activeTab] || []).length;
+                                            const isOpen = expandedItemId === item.id;
+                                            const titleText = (item.title || '').trim();
+                                            return (
+                                                <div
+                                                    key={item.id}
+                                                    className={
+                                                        'bg-slate-50 rounded-3xl border overflow-hidden transition-shadow ' +
+                                                        (isOpen ? 'ring-2 ring-blue-200 shadow-md' : '')
+                                                    }
+                                                >
+                                                    <div className="flex items-center gap-2 sm:gap-3 px-4 py-3">
+                                                        <span className="text-[11px] font-black text-slate-400 w-7 shrink-0 tabular-nums">
+                                                            {index + 1}
+                                                        </span>
+                                                        <button
+                                                            type="button"
+                                                            className="flex-1 text-left min-w-0 group"
+                                                            onClick={() =>
+                                                                setExpandedItemId((id) => (id === item.id ? null : item.id))
+                                                            }
+                                                        >
+                                                            <span className="font-black text-blue-900 group-hover:underline decoration-2 underline-offset-2 block truncate">
+                                                                {titleText || (
+                                                                    <span className="text-slate-400 font-bold">(No title — click to add)</span>
+                                                                )}
+                                                            </span>
+                                                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+                                                                {isOpen ? 'Hide details' : 'Show details'} · {item.id}
+                                                            </span>
+                                                        </button>
+                                                        <div className="flex items-center gap-1 shrink-0">
+                                                            <button
+                                                                type="button"
+                                                                title="Move up one"
+                                                                disabled={index <= 0}
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    moveListItemOneStep(activeTab, index, -1);
+                                                                }}
+                                                                className="w-9 h-9 rounded-xl border-2 border-slate-200 bg-white font-black text-slate-700 hover:bg-slate-100 disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-white"
+                                                            >
+                                                                ↑
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                title="Move down one"
+                                                                disabled={index >= listLen - 1}
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    moveListItemOneStep(activeTab, index, 1);
+                                                                }}
+                                                                className="w-9 h-9 rounded-xl border-2 border-slate-200 bg-white font-black text-slate-700 hover:bg-slate-100 disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-white"
+                                                            >
+                                                                ↓
+                                                            </button>
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                if (expandedItemId === item.id) setExpandedItemId(null);
+                                                                removeListItem(activeTab, item.id);
+                                                            }}
+                                                            className="text-red-600 font-black text-[10px] uppercase tracking-widest hover:underline shrink-0 px-2"
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    </div>
+
+                                                    {isOpen ? (
+                                                        <div className="px-4 pb-5 pt-1 border-t border-slate-200/80 bg-white/60 space-y-4">
+                                                            <Field
+                                                                label="Title"
+                                                                value={item.title}
+                                                                onChange={(v) => updateListItem(activeTab, item.id, { title: v })}
+                                                            />
+                                                            <ImageField
+                                                                label="Image (URL or upload from computer)"
+                                                                value={item.image}
+                                                                onChange={(v) => updateListItem(activeTab, item.id, { image: v })}
+                                                            />
+                                                            <TextArea
+                                                                label="Description"
+                                                                value={item.desc}
+                                                                onChange={(v) => updateListItem(activeTab, item.id, { desc: v })}
+                                                                rows={4}
+                                                            />
+                                                            {activeTab === 'projects' ? (
+                                                                <div className="grid md:grid-cols-2 gap-4">
+                                                                    <Field
+                                                                        label="Project Type"
+                                                                        value={item.type}
+                                                                        onChange={(v) => updateListItem(activeTab, item.id, { type: v })}
+                                                                    />
+                                                                    <Field
+                                                                        label="Year"
+                                                                        value={item.year}
+                                                                        onChange={(v) => updateListItem(activeTab, item.id, { year: v })}
+                                                                    />
+                                                                </div>
+                                                            ) : null}
+                                                        </div>
+                                                    ) : null}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <button onClick={onSave} className="bg-blue-900 text-white px-8 py-4 rounded-2xl font-black">SAVE {activeTab.toUpperCase()}</button>
+                                </div>
+                            )}
+                        </div>
+                    </main>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<AdminPanel />);
+    </script>
+</body>
+</html>

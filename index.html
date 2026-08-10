@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechnoDeals BD | Consultancy & Engineering</title>
+    <link id="site-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231e3a8a'/%3E%3Cpath fill='%23fff' d='M8 22V10h3.2v4.4h4.2V10H19v12h-3.2v-4.8h-4.2V22H8zm13.5 0V10H25v12h-3.5z'/%3E%3C/svg%3E" />
+    <link id="site-apple-touch-icon" rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%231e3a8a'/%3E%3Ctext x='90' y='118' text-anchor='middle' fill='white' font-size='72' font-family='system-ui,sans-serif' font-weight='800'%3ET%3C/text%3E%3C/svg%3E" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); }
+        .section-padding { padding: 5rem 1.5rem; }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const DEFAULT_FAVICON_SVG =
+            "data:image/svg+xml," +
+            encodeURIComponent(
+                "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='#1e3a8a'/><path fill='#fff' d='M8 22V10h3.2v4.4h4.2V10H19v12h-3.2v-4.8h-4.2V22H8zm13.5 0V10H25v12h-3.5z'/></svg>"
+            );
+
+        // Default data (fallback if JSON fails to load)
+        const defaultSiteData = {
+            info: {
+                logo_title: 'TECHNODEALS BD',
+                logo_image: '',
+                address: 'Road-13, Block-E, Banani C/A, Dhaka 1213, Bangladesh',
+                email: 'technodealsbd@gmail.com',
+                phone: '+8801558956983'
+            },
+            hero: {
+                title: 'TECHNODEALS BD',
+                subtitle: 'Consultancy • Engineering Solution • Material Supply • IT Support',
+                cta_text: 'Request Consultation',
+                video: 'https://cdn.coverr.co/videos/coverr-people-on-a-cruising-boat-in-the-ocean-4301/1080p.mp4'
+            },
+            about: {
+                title: 'About Our Firm',
+                content: 'Technodeals BD is a multidisciplinary consultancy firm providing integrated, end-to-end solutions. By combining innovative thinking with engineering precision, we transform complex challenges into sustainable successes.',
+                image: 'https://images.unsplash.com/photo-1577998072123-0861d982e9e5?auto=format&fit=crop&w=1600&q=80'
+            },
+            services: [
+                { id: 'svc_1', title: 'Consultancy', desc: 'Expert technical and strategic maritime advice.', image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80' },
+                { id: 'svc_2', title: 'Engineering Solutions', desc: 'Precision design and structural analysis.', image: 'https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?auto=format&fit=crop&w=900&q=80' },
+                { id: 'svc_3', title: 'Material Supply', desc: 'High-quality industrial and maritime procurement.', image: 'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=900&q=80' },
+                { id: 'svc_4', title: 'IT Support', desc: 'Integrated digital infrastructure for industry.', image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&w=900&q=80' }
+            ],
+            products: [
+                { id: 'prd_w1', title: '50T 8Point Mooring Winch', desc: 'Heavy-duty eight-point mooring spread for offshore positioning and station-keeping. Multi-drum arrangement for simultaneous line make-up, tension monitoring, and controlled release during berthing or field operations.', image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?auto=format&fit=crop&w=1400&q=80' },
+                { id: 'prd_w2', title: '60 Ton Storage Winch', desc: 'High-capacity storage winch for long lengths of wire or synthetic rope. Suited to deck stowage, cable laying support, and controlled payout / recovery in industrial and marine applications.', image: 'https://images.unsplash.com/photo-1529078155058-5d716f45d604?auto=format&fit=crop&w=1400&q=80' },
+                { id: 'prd_w3', title: '40 Ton 4 Point Mooring Winch', desc: 'Four-point mooring winch system for terminals, barges, and offshore spreads. Delivers reliable line pull for symmetric mooring layouts and coordinated tensioning.', image: 'https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=1400&q=80' },
+                { id: 'prd_w4', title: '10 Ton Single Drum Lifting Winch', desc: 'Single-drum lifting winch for deck stores, workshop lifts, and auxiliary hoisting. Compact configuration for batch production or vessel retrofit programmes.', image: 'https://images.unsplash.com/photo-1581092919535-7146b8f1d1bb?auto=format&fit=crop&w=1400&q=80' },
+                { id: 'prd_w5', title: '50 Ton Anchor Handling Towing Winch', desc: 'Anchor-handling and towing (AHTS) winch rated for high line pull, braking, and spooling of wire and chain during rig moves, buoy work, and offshore support.', image: 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=1400&q=80' },
+                { id: 'prd_w6', title: '3 Ton Double Drum Anchor Windlass', desc: 'Double-drum anchor windlass for chain and rope handling on foredecks and workboats. Separated drums allow independent anchor work while maintaining a small installed footprint.', image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1400&q=80' }
+            ],
+            projects: [
+                { id: 'prj_1', title: '72m Offshore Support Vessel', desc: 'Concept design, stability analysis, and class approval for a DP-2 offshore support vessel operating in harsh environments.', type: 'Offshore', year: '2024', image: 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=1200&q=80' },
+                { id: 'prj_2', title: 'High-Speed Aluminum Catamaran', desc: 'Hydrodynamic optimization and resistance analysis resulting in a 12% reduction in fuel consumption.', type: 'Passenger', year: '2023', image: 'https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=1200&q=80' },
+                { id: 'prj_3', title: 'Multi-Purpose Harbor Tug', desc: 'Full design package including intact/damage stability, class drawings, and flag-state approval.', type: 'Workboat', year: '2022', image: 'https://images.unsplash.com/photo-1544551763-cedeca3450d5?auto=format&fit=crop&w=1200&q=80' }
+            ]
+        };
+
+        function mergeData(defaults, serverData) {
+            if (!serverData || typeof serverData !== 'object') return defaults;
+            return {
+                ...defaults,
+                ...serverData,
+                info: { ...defaults.info, ...(serverData.info || {}) },
+                hero: { ...defaults.hero, ...(serverData.hero || {}) },
+                about: { ...defaults.about, ...(serverData.about || {}) },
+                services: Array.isArray(serverData.services) ? serverData.services : defaults.services,
+                products: Array.isArray(serverData.products) ? serverData.products : defaults.products,
+                projects: Array.isArray(serverData.projects) ? serverData.projects : defaults.projects
+            };
+        }
+
+        function App() {
+            const [siteData, setSiteData] = useState(defaultSiteData);
+            const [showAllProducts, setShowAllProducts] = useState(false);
+            const [openProductId, setOpenProductId] = useState(null);
+            const PRODUCTS_PREVIEW = 6;
+
+            // Fetch from site-data.json on server
+            useEffect(() => {
+                fetch('site-data.json?t=' + Date.now())
+                    .then(res => {
+                        if (!res.ok) throw new Error();
+                        return res.json();
+                    })
+                    .then(json => {
+                        const merged = mergeData(defaultSiteData, json);
+                        setSiteData(merged);
+                    })
+                    .catch(() => {
+                        // Keep default data if fetch fails
+                        console.log('Using default data');
+                    });
+            }, []);
+
+            // Update favicon when logo changes
+            useEffect(() => {
+                const logo = siteData.info.logo_image || '';
+                const href = logo || DEFAULT_FAVICON_SVG;
+                const fav = document.getElementById('site-favicon');
+                if (fav) fav.href = href;
+            }, [siteData.info.logo_image]);
+
+            return (
+                <div className="min-h-screen">
+                    {/* Navbar */}
+                    <nav className="fixed w-full z-50 glass border-b border-slate-100 px-6 py-4 flex justify-between items-center">
+                        <div className="flex items-center gap-4">
+                            {siteData.info.logo_image ? (
+                                <img src={siteData.info.logo_image} alt="" className="h-10 w-auto max-w-[140px] object-contain object-left" />
+                            ) : null}
+                            <div className="flex flex-col">
+                                <span className="text-2xl font-black text-blue-900 leading-none">{siteData.info.logo_title}</span>
+                                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Excellence in Engineering</span>
+                            </div>
+                        </div>
+                        <div className="hidden md:flex items-center gap-8 font-bold text-sm text-slate-600">
+                            <a href="#" className="hover:text-blue-900 transition-colors">Home</a>
+                            <a href="#about" className="hover:text-blue-900 transition-colors">About</a>
+                            <a href="#services" className="hover:text-blue-900 transition-colors">Services</a>
+                            <a href="#products" className="hover:text-blue-900 transition-colors">Products</a>
+                            <a href="#projects" className="hover:text-blue-900 transition-colors">Projects</a>
+                            <a href="#contact" className="bg-blue-900 text-white px-6 py-2 rounded-full hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20">Contact</a>
+                        </div>
+                    </nav>
+
+                    {/* Hero Section */}
+                    <section id="home" className="h-screen relative flex items-center justify-center overflow-hidden">
+                        <video autoPlay loop muted playsInline className="absolute w-full h-full object-cover opacity-50 bg-slate-900" src={siteData.hero.video}></video>
+                        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 to-white"></div>
+                        <div className="relative z-10 text-center px-4">
+                            <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tighter text-blue-950">{siteData.hero.title}</h1>
+                            <p className="text-xl md:text-2xl font-semibold text-slate-700 mb-10">{siteData.hero.subtitle}</p>
+                            <a href="#contact" className="bg-blue-900 text-white px-10 py-5 rounded-2xl font-black text-lg transition-all inline-block hover:scale-105">{siteData.hero.cta_text}</a>
+                        </div>
+                    </section>
+
+                    {/* About Section */}
+                    <section id="about" className="section-padding bg-white">
+                        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+                            <div className="rounded-[40px] overflow-hidden shadow-2xl h-[500px] bg-slate-200">
+                                <img src={siteData.about.image} className="w-full h-full object-cover object-center" alt="About Us"/>
+                            </div>
+                            <div>
+                                <h2 className="text-4xl font-black text-blue-900 mb-6">{siteData.about.title}</h2>
+                                <p className="text-slate-600 text-lg leading-relaxed mb-8">{siteData.about.content}</p>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                                        <div className="text-3xl font-black text-blue-600 mb-2">10+</div>
+                                        <div className="text-xs font-bold uppercase text-slate-400">Years Experience</div>
+                                    </div>
+                                    <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                                        <div className="text-3xl font-black text-blue-600 mb-2">20+</div>
+                                        <div className="text-xs font-bold uppercase text-slate-400">Projects Done</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Services Section */}
+                    <section id="services" className="section-padding bg-slate-50">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="text-center mb-16">
+                                <h2 className="text-4xl font-black text-blue-900">Our Services</h2>
+                                <div className="h-1 w-20 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                                {siteData.services.map(s => (
+                                    <div key={s.id} className="bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all overflow-hidden group flex flex-col">
+                                        <div className="h-40 w-full overflow-hidden bg-slate-200">
+                                            {s.image ? (
+                                                <img src={s.image} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700" alt={s.title} />
+                                            ) : null}
+                                        </div>
+                                        <div className="p-6 flex-1 flex flex-col">
+                                            <h3 className="text-xl font-black text-blue-900 mb-3">{s.title}</h3>
+                                            <p className="text-slate-500 text-sm font-medium leading-relaxed flex-1">{s.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Products Section */}
+                    <section id="products" className="section-padding bg-white">
+                        <div className="max-w-7xl mx-auto">
+                            <h2 className="text-4xl font-black text-blue-900 mb-16">Global Product Supply</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {(showAllProducts ? siteData.products : siteData.products.slice(0, PRODUCTS_PREVIEW)).map(p => (
+                                    <div
+                                        key={p.id}
+                                        role="button"
+                                        tabIndex={0}
+                                        onClick={() => setOpenProductId((cur) => (cur === p.id ? null : p.id))}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' || e.key === ' ') {
+                                                e.preventDefault();
+                                                setOpenProductId((cur) => (cur === p.id ? null : p.id));
+                                            }
+                                        }}
+                                        className="relative group rounded-[40px] overflow-hidden h-80 outline-none cursor-pointer focus-visible:ring-4 focus-visible:ring-blue-400 focus-visible:ring-offset-2 bg-slate-900"
+                                    >
+                                        <img src={p.image} alt="" className="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700"/>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-blue-950/95 via-blue-950/25 to-transparent pointer-events-none" />
+                                        <div
+                                            className={
+                                                'absolute inset-0 bg-blue-950/88 transition-opacity duration-300 flex items-center justify-center p-6 z-10 ' +
+                                                (openProductId === p.id ? 'opacity-100' : 'opacity-0 md:group-hover:opacity-100')
+                                            }
+                                        >
+                                            {p.desc ? (
+                                                <p className="text-white/95 text-sm font-semibold leading-relaxed text-center max-h-full overflow-y-auto">{p.desc}</p>
+                                            ) : (
+                                                <p className="text-white/60 text-sm font-bold">No description</p>
+                                            )}
+                                        </div>
+                                        <div className="absolute inset-x-0 bottom-0 p-8 z-20 pointer-events-none">
+                                            <h3 className="text-xl md:text-2xl font-black text-white drop-shadow-lg leading-tight">{p.title}</h3>
+                                            <p className="text-white/70 text-[10px] font-bold uppercase tracking-widest mt-2 md:hidden">Tap for details</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            {siteData.products.length > PRODUCTS_PREVIEW && (
+                                <div className="flex justify-center mt-12">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowAllProducts((v) => !v)}
+                                        className="bg-blue-900 text-white px-10 py-4 rounded-2xl font-black hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20"
+                                    >
+                                        {showAllProducts ? 'Show fewer products' : `Show all products (${siteData.products.length})`}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+
+                    {/* Projects Section */}
+                    <section id="projects" className="section-padding bg-slate-900 text-white">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="flex justify-between items-end mb-16">
+                                <div>
+                                    <h2 className="text-4xl font-black">Success Stories</h2>
+                                    <p className="text-slate-400 mt-2">Delivering engineering excellence across borders.</p>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                                {siteData.projects.map(p => (
+                                    <div key={p.id} className="bg-white/5 rounded-3xl border border-white/10 overflow-hidden hover:border-blue-500 transition-colors">
+                                        <div className="h-60 overflow-hidden bg-slate-800">
+                                            <img src={p.image} className="w-full h-full object-cover object-center" alt={p.title}/>
+                                        </div>
+                                        <div className="p-8">
+                                            <div className="text-blue-400 font-bold text-xs mb-2">{p.type} • {p.year}</div>
+                                            <h3 className="text-2xl font-black">{p.title}</h3>
+                                            {p.desc && <p className="text-white/70 font-semibold text-sm mt-3 leading-relaxed">{p.desc}</p>}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Contact Section */}
+                    <section id="contact" className="section-padding bg-blue-950 text-white">
+                        <div className="max-w-3xl mx-auto text-center">
+                            <h2 className="text-5xl font-black mb-6">Let's start a <span className="text-blue-400">conversation.</span></h2>
+                            <p className="text-blue-100/70 mb-10 text-lg leading-relaxed">
+                                For enquiries and project consultations we respond by email. Send us details of your vessel, port, or technical scope—we will get back to you.
+                            </p>
+                            <a
+                                href={`mailto:${siteData.info.email}?subject=${encodeURIComponent('Enquiry — TechnoDeals BD')}`}
+                                className="inline-flex items-center justify-center gap-3 bg-blue-400 text-blue-950 px-10 py-5 rounded-2xl font-black text-lg hover:bg-blue-300 transition-all shadow-xl shadow-black/30"
+                            >
+                                Email {siteData.info.email}
+                            </a>
+                            <div className="mt-14 space-y-5 text-left max-w-xl mx-auto border-t border-white/10 pt-10">
+                                <div className="flex flex-col sm:flex-row sm:gap-6 gap-1">
+                                    <span className="font-black text-blue-400 shrink-0 w-24">PHONE</span>
+                                    <span className="text-blue-50">{siteData.info.phone}</span>
+                                </div>
+                                <div className="flex flex-col sm:flex-row sm:gap-6 gap-1">
+                                    <span className="font-black text-blue-400 shrink-0 w-24">OFFICE</span>
+                                    <span className="text-blue-100/85">{siteData.info.address}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <footer className="py-10 bg-slate-950 text-center text-slate-500 text-sm">
+                        &copy; {new Date().getFullYear()} {siteData.info.logo_title}.
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

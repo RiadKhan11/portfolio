@@ -1,0 +1,236 @@
+{
+  "info": {
+    "logo_title": "TECHNODEALS BD",
+    "logo_image": "media/logo.jpeg",
+    "address": "Road-13, Block-E, Banani C/A, Dhaka 1213, Bangladesh",
+    "email": "technodealsbd@gmail.com",
+    "phone": "+8801558956983"
+  },
+  "hero": {
+    "title": "TECHNODEALS BD",
+    "subtitle": "Consultancy • Engineering Solution • Material Supply • IT Support",
+    "cta_text": "Request Consultation",
+    "video": "https://cdn.coverr.co/videos/coverr-people-on-a-cruising-boat-in-the-ocean-4301/1080p.mp4"
+  },
+  "about": {
+    "title": "About Our Firm",
+    "content": "Technodeals BD is a multidisciplinary consultancy firm providing integrated, end-to-end solutions. By combining innovative thinking with engineering precision, we transform complex challenges into sustainable successes.",
+    "image": "https://images.unsplash.com/photo-1577998072123-0861d982e9e5?auto=format&fit=crop&w=1600&q=80"
+  },
+  "services": [
+    {
+      "id": "svc_1",
+      "title": "Consultancy",
+      "desc": "Expert technical and strategic maritime advice.",
+      "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "id": "svc_2",
+      "title": "Engineering Solutions",
+      "desc": "Precision design and structural analysis.",
+      "image": "https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "id": "svc_3",
+      "title": "Material Supply",
+      "desc": "High-quality industrial and maritime procurement.",
+      "image": "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "id": "svc_4",
+      "title": "IT Support",
+      "desc": "Integrated digital infrastructure for industry.",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&w=900&q=80"
+    }
+  ],
+  "products": [
+    {
+      "id": "prd_w1",
+      "title": "50T 8Point Mooring Winch",
+      "desc": "Heavy-duty eight-point mooring spread for offshore positioning and station-keeping. Multi-drum arrangement for simultaneous line make-up, tension monitoring, and controlled release during berthing or field operations.",
+      "image": "media/50T_8Point_Mooring_Winch.png"
+    },
+    {
+      "id": "prd_w2",
+      "title": "60 Ton Storage Winch",
+      "desc": "High-capacity storage winch for long lengths of wire or synthetic rope. Suited to deck stowage, cable laying support, and controlled payout / recovery in industrial and marine applications.",
+      "image": "media/60 Ton Storage Winch.png"
+    },
+    {
+      "id": "prd_w3",
+      "title": "40 Ton 4 Point Mooring Winch",
+      "desc": "Four-point mooring winch system for terminals, barges, and offshore spreads. Delivers reliable line pull for symmetric mooring layouts and coordinated tensioning.",
+      "image": "media/40 Ton 4 Point Mooring Winch.png"
+    },
+    {
+      "id": "prd_w4",
+      "title": "10 Ton Single Drum Lifting Winch",
+      "desc": "Single-drum lifting winch for deck stores, workshop lifts, and auxiliary hoisting. Compact configuration for batch production or vessel retrofit programmes.",
+      "image": "media/10 Ton Single Drum Lifting Winch.png"
+    },
+    {
+      "id": "prd_w5",
+      "title": "50 Ton Anchor Handling Towing Winch",
+      "desc": "Anchor-handling and towing (AHTS) winch rated for high line pull, braking, and spooling of wire and chain during rig moves, buoy work, and offshore support.",
+      "image": "media/50 Ton Anchor Handling Towing Winch.png"
+    },
+    {
+      "id": "prd_w6",
+      "title": "3 Ton Double Drum Anchor Windlass",
+      "desc": "Double-drum anchor windlass for chain and rope handling on foredecks and workboats. Separated drums allow independent anchor work while maintaining a small installed footprint.",
+      "image": "media/3 Ton Double Drum Anchor Windlass.png"
+    },
+    {
+      "id": "prd_1",
+      "title": "250 Ton Single Drum Hydraulic Mooring Winch",
+      "desc": "A 250-ton capacity hydraulic mooring winch system used for laying submersible pipeline. In 2013, it laid 37km of 24-inch diameter pipeline at 52m depth, pulling 3.2km onshore in Surabaya, Indonesia.",
+      "image": "media/250 Ton Single Drum Hydraulic Mooring Winch.png"
+    },
+    {
+      "id": "prd_2",
+      "title": "Marine Terminal Gangway & Pontoon",
+      "desc": "Delivered in 2021, this system includes a pair of pontoons (9m x 5m x 1.8m) with gangways (12m long x 2m wide) to improve workflow between two facility parts.",
+      "image": "media/Marine Terminal Gangway & Pontoon.png"
+    },
+    {
+      "id": "prd_3",
+      "title": "2.5 Ton 3m Marinized Sub-zero Cold Storage Electrical Overhead 4-way Slewring Crane",
+      "desc": "9 units delivered in 2021 for Antarctic krill fishing vessels. Operates in Zone 1 hazardous areas and cold storage (-32°C), powered by vessel electrical systems.",
+      "image": "media/2.5Ton 3m Marinized Sub-zero Cold Storage Electrical Overhead 4-way Slewing Crane.png"
+    },
+    {
+      "id": "prd_4",
+      "title": "100 Ton Turret Gantry Hoist",
+      "desc": "Manufactured for FPSO vessel in 2015. Features mono-railing 100-ton vertical lifting with ±50mm longitude accuracy. Lifting speed: 0.7m/min (low) / 7m/min (high), lifting height 53m, traveling speed 3m/min.",
+      "image": "media/100 Ton Turret Gantry Hoist.png"
+    },
+    {
+      "id": "prd_5",
+      "title": "Pipeline End Manifolds (PLEMs)",
+      "desc": "Subsea pipeline termination structures that split pipeline flow into branches connected to production/injection wells. Includes engineering, procurement, and installation with considerations for soil conditions, thermal expansion, and flow-induced vibrations.",
+      "image": "media/Pipeline End Manifolds (PLEMs).png"
+    },
+    {
+      "id": "prd_6",
+      "title": "API Wellhead & X-Mas Tree",
+      "desc": "Sales of oil & gas wellhead equipment including casing head, casing head spool, tubing head spool, API X-mas tree, choke & kill manifold, manual/hydraulic gate valves, and check valves.",
+      "image": "media/API wellhead.png"
+    },
+    {
+      "id": "prd_7",
+      "title": "API Rotating Blowout Preventer (RBOP) & Mud/Gas Separator",
+      "desc": "Safety equipment for oil & gas drilling operations including rotating blowout preventers and mud/gas separators.",
+      "image": "media/API Rotating Blowout Preventer (RBOP).png"
+    },
+    {
+      "id": "prd_8",
+      "title": "API Flanges, Drilling Spool, Elbows & Hammer Union",
+      "desc": "Various sizes of API flanges, drilling spools, API elbows, hammer unions, ring gaskets, studs, bolts, and nuts.",
+      "image": "https://images.unsplash.com/photo-1581092334519-3d7b1a0f8261?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_9",
+      "title": "NOV (Varco) TDS-8S Topdrive Bearings Assembly Complete",
+      "desc": "Completed overhaul service for TDS-8S Topdrive in the Netherlands in 2022. Provides inspections, repair, and servicing for both old and new top drives.",
+      "image": "media/NOV (Varco) TDS-8S Topdrive Bearings.png"
+    },
+    {
+      "id": "prd_10",
+      "title": "Marine & Offshore Machineries Repair",
+      "desc": "Service and repair for brands including Plimsoll, PH Hydraulics, Promoter, Transvictory, MacGregor, Rolls Royce.",
+      "image": "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_11",
+      "title": "Marine & Offshore Cranes Repair (JJ, MacGregor)",
+      "desc": "Specialized repair services for JJ and MacGregor marine and offshore cranes.",
+      "image": "https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_12",
+      "title": "Hopper Hydraulic Cylinders Repair (Bosch Rexroth)",
+      "desc": "Overhaul and repair services for Bosch Rexroth hopper hydraulic cylinders.",
+      "image": "https://images.unsplash.com/photo-1581092919535-7146b8f1d1bb?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_13",
+      "title": "Lars System Repair (Deeptech)",
+      "desc": "Refurbishment and repair services for Deeptech LARS (Launch and Recovery System).",
+      "image": "https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_14",
+      "title": "Pipe Handling System Repair (TC, JJ)",
+      "desc": "Repair and servicing of pipe handling systems from TC and JJ.",
+      "image": "https://images.unsplash.com/photo-1581091215367-59ab6b3b3dff?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_15",
+      "title": "30Ton Bow Towing Winch Repair",
+      "desc": "On-site repair of 30-ton bow towing winch in Cameroon.",
+      "image": "https://images.unsplash.com/photo-1529078155058-5d716f45d604?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_16",
+      "title": "10Ton Single Drum Lifting Winch Servicing & Commissioning",
+      "desc": "Servicing and commissioning completed in Indonesia.",
+      "image": "media/10 Ton Single Drum Lifting Winch.png"
+    },
+    {
+      "id": "prd_17",
+      "title": "Refurbishment of LARS System",
+      "desc": "Complete refurbishment of Launch and Recovery Systems at TC Workshop.",
+      "image": "https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_18",
+      "title": "1Ton-10M / 3Ton-4.8M Electrical Hydraulic Knuckle Boom Crane",
+      "desc": "Electrical hydraulic knuckle boom crane available in 1-ton (10m) and 3-ton (4.8m) configurations.",
+      "image": "https://images.unsplash.com/photo-1506973035872-a4f23ef3f13f?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_19",
+      "title": "Overhaul of Hopper Cylinder",
+      "desc": "Complete hopper cylinder overhaul service at TC Workshop.",
+      "image": "https://images.unsplash.com/photo-1581092334519-3d7b1a0f8261?auto=format&fit=crop&w=1400&q=80"
+    },
+    {
+      "id": "prd_20",
+      "title": "0.5Ton 20M Cargo Crane Electro-Hydraulic",
+      "desc": "Electro-hydraulic cargo crane with 0.5-ton capacity and 20-meter reach.",
+      "image": "media/0.5Ton 20M Cargo Crane Electro-Hydraulic.png"
+    },
+    {
+      "id": "prd_21",
+      "title": "1.2Ton 11.5m Marine Crane",
+      "desc": "Marine crane with 1.2-ton lifting capacity and 11.5-meter length.",
+      "image": "media/1.2Ton 11.5m Marine Crane.png"
+    }
+  ],
+  "projects": [
+    {
+      "id": "prj_1",
+      "title": "72m Offshore Support Vessel",
+      "desc": "Concept design, stability analysis, and class approval for a DP-2 offshore support vessel operating in harsh environments.",
+      "type": "Offshore",
+      "year": "2024",
+      "image": "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=1200&q=80"
+    },
+    {
+      "id": "prj_2",
+      "title": "High-Speed Aluminum Catamaran",
+      "desc": "Hydrodynamic optimization and resistance analysis resulting in a 12% reduction in fuel consumption.",
+      "type": "Passenger",
+      "year": "2023",
+      "image": "https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&w=1200&q=80"
+    },
+    {
+      "id": "prj_3",
+      "title": "Multi-Purpose Harbor Tug",
+      "desc": "Full design package including intact/damage stability, class drawings, and flag-state approval.",
+      "type": "Workboat",
+      "year": "2022",
+      "image": "https://images.unsplash.com/photo-1544551763-cedeca3450d5?auto=format&fit=crop&w=1200&q=80"
+    }
+  ]
+}
