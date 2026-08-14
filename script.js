@@ -1,5 +1,5 @@
 const navLinks = document.querySelectorAll('.nav-link');
-const sections = [...document.querySelectorAll('#home, #work, #education, #publication, #contact')];
+const sections = [...document.querySelectorAll('#home, #work, #education, #publication, #cv, #contact')];
 
 // Active nav item based on visible section.
 const sectionObserver = new IntersectionObserver(
