@@ -37,17 +37,25 @@ navLinks.forEach(link => {
 const filterButtons = document.querySelectorAll('.filter-btn');
 const publicationItems = document.querySelectorAll('.publication-item');
 
+function applyFilter(filter) {
+  filterButtons.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filter);
+  });
+
+  publicationItems.forEach(item => {
+    const shouldShow = filter === 'all' || item.dataset.type === filter;
+    item.classList.toggle('hidden', !shouldShow);
+  });
+}
+
 filterButtons.forEach(button => {
   button.addEventListener('click', () => {
-    const filter = button.dataset.filter;
-    filterButtons.forEach(btn => btn.classList.toggle('active', btn === button));
-
-    publicationItems.forEach(item => {
-      const shouldShow = filter === 'all' || item.dataset.type === filter;
-      item.classList.toggle('hidden', !shouldShow);
-    });
+    applyFilter(button.dataset.filter);
   });
 });
+
+// Initial state: show all publications
+applyFilter('all');
 
 // Scroll reveal.
 const revealItems = document.querySelectorAll('.reveal');
