@@ -37,25 +37,42 @@ navLinks.forEach(link => {
 const filterButtons = document.querySelectorAll('.filter-btn');
 const publicationItems = document.querySelectorAll('.publication-item');
 
-function applyFilter(filter) {
-  filterButtons.forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.filter === filter);
-  });
-
-  publicationItems.forEach(item => {
-    const shouldShow = filter === 'all' || item.dataset.type === filter;
-    item.classList.toggle('hidden', !shouldShow);
-  });
-}
-
 filterButtons.forEach(button => {
   button.addEventListener('click', () => {
-    applyFilter(button.dataset.filter);
+
+    const filter = button.dataset.filter;
+
+    // Update active button
+    filterButtons.forEach(btn => {
+      btn.classList.remove('active');
+    });
+    button.classList.add('active');
+
+    // Show/hide publications
+    publicationItems.forEach(item => {
+
+      if (filter === 'all') {
+        // Always show everything
+        item.classList.remove('hidden');
+      } 
+      else if (item.dataset.type === filter) {
+        item.classList.remove('hidden');
+      } 
+      else {
+        item.classList.add('hidden');
+      }
+
+    });
+
   });
 });
 
-// Initial state: show all publications
-applyFilter('all');
+// Automatically show all publications on first load
+publicationItems.forEach(item => {
+  item.classList.remove('hidden');
+});
+
+
 
 // Scroll reveal.
 const revealItems = document.querySelectorAll('.reveal');
