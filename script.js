@@ -68,6 +68,8 @@ filterButtons.forEach(button => {
   });
 });
 
+console.log(document.querySelectorAll('.publication-item.hidden').length);
+
 
 // Scroll reveal.
 const revealItems = document.querySelectorAll('.reveal');
