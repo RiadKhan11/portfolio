@@ -84,7 +84,13 @@ const revealObserver = new IntersectionObserver(
   },
   { threshold: 0.12 }
 );
-revealItems.forEach(item => revealObserver.observe(item));
+revealItems.forEach(item => {
+  if (item.id === 'publication-list') {
+    item.classList.add('visible');
+  } else {
+    revealObserver.observe(item);
+  }
+});
 
 // Make publications visible immediately
 const publicationSection = document.querySelector('#publication-list');
