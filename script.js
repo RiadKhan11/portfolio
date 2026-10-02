@@ -86,5 +86,12 @@ const revealObserver = new IntersectionObserver(
 );
 revealItems.forEach(item => revealObserver.observe(item));
 
+// Make publications visible immediately
+const publicationSection = document.querySelector('#publication-list');
+
+if (publicationSection) {
+  publicationSection.classList.add('visible');
+}
+
 // Footer year.
 document.getElementById('year').textContent = new Date().getFullYear();
